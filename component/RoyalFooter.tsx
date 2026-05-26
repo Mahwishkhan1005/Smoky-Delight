@@ -1,12 +1,12 @@
 import React from "react";
 import {
-    Dimensions,
-    Image,
-    Linking,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -14,14 +14,13 @@ const { width } = Dimensions.get("window");
 const RoyalFooter = ({ logoImg }) => {
   const currentYear = new Date().getFullYear();
 
-  // Coordinates for Kallu Chawk, Pugmil, Hazaribagh
-  const lat = 24.0019;
-  const lng = 85.3615;
-
-  const openMap = () => {
-    // Opens the interactive map in the phone's browser/app
-    const url = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`;
-    Linking.openURL(url);
+  // Redirects directly to the Google maps page for the restaurant using a universal search query
+  const openGooglePage = () => {
+    const url =
+      "https://www.google.com/maps/search/?api=1&query=Smoky+Delight+Hazaribagh";
+    Linking.openURL(url).catch((err) =>
+      console.error("An error occurred", err),
+    );
   };
 
   return (
@@ -72,43 +71,46 @@ const RoyalFooter = ({ logoImg }) => {
           </View>
         </View>
 
-        {/* Right Section: Find Us / OpenStreetMap UI */}
+        {/* Right Section: Find Us / Interactive Clickable Map Card */}
         <View style={styles.mapSection}>
           <Text style={styles.findUs}>Find Us</Text>
+
           <TouchableOpacity
-            onPress={openMap}
-            activeOpacity={0.9}
+            onPress={openGooglePage}
+            activeOpacity={0.85}
             style={styles.mapFrame}
           >
-            {/* OSM Tile Integration:
-              This renders a static tile of the Hazaribagh location.
-              Note: For a fully interactive map, you would typically use react-native-maps with a <UrlTile />.
-            */}
             <View style={styles.osmContainer}>
               <Image
                 source={{
-                  uri: `https://tile.openstreetmap.org/17/92976/54911.png`,
-                }} // Static tile for the Hazaribagh area
+                  uri: `https://a.basemaps.cartocdn.com/dark_all/13/5811/3431.png`,
+                }}
                 style={styles.mapImage}
                 resizeMode="cover"
               />
-              {/* Custom UI Marker placed exactly at the center */}
+              {/* Custom UI Marker overlay showing restaurant location context */}
               <View style={styles.markerContainer}>
                 <Text style={styles.markerPin}>📍</Text>
                 <View style={styles.markerLabel}>
                   <Text style={styles.markerText}>Smoky Delight</Text>
+                  <Text style={styles.markerSubText}>Hazaribagh</Text>
                 </View>
               </View>
             </View>
           </TouchableOpacity>
-          <Text style={styles.osmCredit}>© OpenStreetMap contributors</Text>
+
+          <Text style={styles.osmCredit}>Click map to view on Google</Text>
         </View>
+      </View>
+
+      <View style={styles.copyrightBar}>
+        <Text style={styles.copyrightText}>
+          &copy; {currentYear} Smoky Delight. All Rights Reserved.
+        </Text>
       </View>
     </View>
   );
 };
-
-export default RoyalFooter;
 
 const styles = StyleSheet.create({
   footerContainer: {
@@ -162,24 +164,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  mapImage: { width: "100%", height: "100%", opacity: 0.8 },
+  mapImage: { width: "100%", height: "100%", opacity: 0.85 },
   markerContainer: { position: "absolute", alignItems: "center" },
   markerPin: { fontSize: 30 },
   markerLabel: {
-    backgroundColor: "rgba(11, 43, 31, 0.9)",
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-    marginTop: 5,
+    backgroundColor: "rgba(11, 43, 31, 0.95)",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    marginTop: 4,
     borderWidth: 1,
     borderColor: "#ffbf47",
+    alignItems: "center",
   },
   markerText: { color: "#FFF", fontSize: 10, fontWeight: "bold" },
+  markerSubText: { color: "#ffbf47", fontSize: 8, marginTop: 1 },
   osmCredit: {
-    color: "rgba(255,255,255,0.2)",
-    fontSize: 8,
-    marginTop: 5,
+    color: "rgba(255,255,255,0.3)",
+    fontSize: 9,
+    marginTop: 6,
     textAlign: "right",
+    fontStyle: "italic",
   },
   copyrightBar: {
     borderTopWidth: 1,
@@ -190,3 +195,5 @@ const styles = StyleSheet.create({
   },
   copyrightText: { color: "rgba(255,255,255,0.3)", fontSize: 10 },
 });
+
+export default RoyalFooter;

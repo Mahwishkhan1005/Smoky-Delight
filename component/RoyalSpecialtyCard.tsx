@@ -1,10 +1,10 @@
 import {
-    Image,
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const RoyalSpecialtyCard = ({ title, description, dishImage, cardBgImage }) => {

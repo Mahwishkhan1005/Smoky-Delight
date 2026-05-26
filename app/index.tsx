@@ -1,10 +1,14 @@
 // app/(tabs)/index.tsx
 
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   Image,
+  Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -20,12 +24,12 @@ import {
   CormorantGaramond_700Bold,
   useFonts,
 } from "@expo-google-fonts/cormorant-garamond";
-import RoyalFooter from "../../component/RoyalFooter";
-import RoyalSpecialtyCard from "../../component/RoyalSpecialtyCard";
+import RoyalFooter from "../component/RoyalFooter";
+import RoyalSpecialtyCard from "../component/RoyalSpecialtyCard";
 
 const { width, height } = Dimensions.get("window");
-const blurredBg = require("../../assets/images/background2.jpg");
-const logoImg = require("../../assets/images/background.png");
+const blurredBg = require("../assets/images/background2.jpg");
+const logoImg = require("../assets/images/background.png");
 
 const App = () => {
   let [fontsLoaded] = useFonts({
@@ -41,6 +45,35 @@ const App = () => {
       </View>
     );
   }
+
+  // Function to handle Google Maps redirection
+  const handleGetDirections = () => {
+    // Uses the official Google Maps search intent API
+    const url =
+      "https://www.google.com/maps/search/?api=1&query=Smoky+Delight,+Kallu+Chawk,+Pugmil,+Hazaribagh";
+    Linking.openURL(url).catch((err) =>
+      console.error("An error occurred", err),
+    );
+  };
+
+  const handleCallNow = () => {
+    const phoneNumber = "tel:+919142668648";
+    Linking.openURL(phoneNumber).catch((err) =>
+      console.error("An error occurred", err),
+    );
+  };
+
+  const handleOrderOnline = () => {
+    Alert.alert(
+      "Order Online",
+      "Our ordering system is currently under maintenance. Please contact us via phone for orders.",
+      [{ text: "OK", onPress: () => console.log("Alert closed") }],
+    );
+  };
+
+  const handleExploreMenu = () => {
+    router.push("/menu"); // This replaces the need for "new router"
+  };
 
   return (
     <View style={styles.container}>
@@ -89,11 +122,17 @@ const App = () => {
             </View>
 
             <View style={styles.actionSection}>
-              <TouchableOpacity style={styles.callNowBtn}>
+              <TouchableOpacity
+                style={styles.callNowBtn}
+                onPress={handleCallNow}
+              >
                 <Text style={styles.callIcon}>📞</Text>
                 <Text style={styles.callText}>Call Now</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.directionsBtn}>
+              <TouchableOpacity
+                style={styles.directionsBtn}
+                onPress={handleGetDirections}
+              >
                 <Text style={styles.directionsText}>Get Directions</Text>
               </TouchableOpacity>
             </View>
@@ -132,10 +171,16 @@ const App = () => {
               prepared food, consistent taste, and warm hospitality.
             </Text>
             <View style={styles.heroButtons}>
-              <TouchableOpacity style={styles.heroOrderBtn}>
+              <TouchableOpacity
+                style={styles.heroOrderBtn}
+                onPress={handleOrderOnline}
+              >
                 <Text style={styles.heroOrderText}>Order Online</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.heroExploreBtn}>
+              <TouchableOpacity
+                style={styles.heroExploreBtn}
+                onPress={handleExploreMenu}
+              >
                 <Text style={styles.heroExploreText}>Explore Menu</Text>
               </TouchableOpacity>
             </View>
@@ -154,63 +199,145 @@ const App = () => {
 
           <View style={styles.staticCardsContainer}>
             <RoyalSpecialtyCard
-              title="Smoky Mandi"
-              description="Charcoal-smoked mutton or chicken served over a bed of rice."
-              dishImage={require("../../assets/images/mandi.png")}
-              cardBgImage={logoImg}
-            />
-            <RoyalSpecialtyCard
               title="Kolkata Biryani"
               description="Premium basmati rice cooked with hand-picked saffron."
-              dishImage={require("../../assets/images/biryani.png")}
+              dishImage={require("../assets/images/biryani.png")}
               cardBgImage={logoImg}
             />
             <RoyalSpecialtyCard
               title="Arabic Kababs"
               description="Traditional mixed rice dish from the Arabian Peninsula."
-              dishImage={require("../../assets/images/kabab.png")}
+              dishImage={require("../assets/images/kabab.png")}
               cardBgImage={logoImg}
             />
             <RoyalSpecialtyCard
               title="Mutton Madhbi"
               description="Tender mutton traditionally grilled on lava stones."
-              dishImage={require("../../assets/images/mandi.png")}
+              dishImage={require("../assets/images/mandi.png")}
               cardBgImage={logoImg}
             />
             <RoyalSpecialtyCard
               title="Murg Musallam"
               description="Arabian-style charcoal grilled chicken with spices."
-              dishImage={require("../../assets/images/musallam.png")}
+              dishImage={require("../assets/images/musallam.png")}
               cardBgImage={logoImg}
             />
           </View>
 
-          {/* New Promotional Banner */}
+          {/* Section Header for Offers */}
+          <View style={[styles.specialityHeaderContainer, { marginTop: 40 }]}>
+            <Text style={styles.specialityHeaderText}>Exclusive Offers</Text>
+            <View style={styles.headerDivider} />
+            <Text style={styles.specialitySubtext}>
+              Swipe to explore our premium curated bundles
+            </Text>
+          </View>
+
+          {/* Horizontally Scrollable Promotional Cards */}
           <View style={styles.promoBannerContainer}>
-            <LinearGradient
-              colors={["rgba(197, 160, 89, 0.15)", "rgba(197, 160, 89, 0.05)"]}
-              style={styles.promoBanner}
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={Platform.OS === "web"}
+              contentContainerStyle={styles.promoScrollContent}
+              style={
+                Platform.OS === "web" ? ({ overflowX: "auto" } as any) : {}
+              }
+              decelerationRate="fast"
+              snapToInterval={296} // Width + Gap for smooth scrolling on mobile
             >
-              <View style={styles.promoContent}>
-                <Text style={styles.promoBadge}>SPECIAL COMBO OFFER</Text>
-                <Text style={styles.promoTitle}>The Royal Feast Trio</Text>
-                <Text style={styles.promoDescription}>
-                  Experience the ultimate fusion of flavors. Order our signature
-                  Smoky Mandi, authentic Kolkata Biryani, and rich Hyderabadi
-                  Biryani together and unlock exclusive combo pricing!
-                </Text>
-                <TouchableOpacity style={styles.promoButton}>
-                  <Text style={styles.promoButtonText}>Claim Offer</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.promoImageContainer}>
-                <Image
-                  source={logoImg}
-                  style={styles.promoImage}
-                  resizeMode="contain"
-                />
-              </View>
-            </LinearGradient>
+              {/* Card 1: Mandi */}
+              <LinearGradient
+                colors={[
+                  "rgba(197, 160, 89, 0.15)",
+                  "rgba(197, 160, 89, 0.05)",
+                ]}
+                style={styles.promoCard}
+              >
+                <View style={styles.promoContent}>
+                  <Text style={styles.promoBadge}>MANDI BUNDLE</Text>
+                  <Text style={styles.promoTitle}>Sultan Mandi Deal</Text>
+                  <Text style={styles.promoDescription}>
+                    Gather the family! Get a complimentary side of traditional
+                    Arabic salad and fresh Laban with every full charcoal-smoked
+                    Arabian Mandi platter.
+                  </Text>
+
+                  <View style={styles.promoImageContainer}>
+                    <Image
+                      source={require("../assets/images/mandi.png")}
+                      style={styles.promoImage}
+                      resizeMode="cover"
+                    />
+                  </View>
+
+                  <TouchableOpacity style={styles.promoButton}>
+                    <Text style={styles.promoButtonText}>Order Mandi</Text>
+                  </TouchableOpacity>
+                </View>
+              </LinearGradient>
+
+              {/* Card 2: Kolkata Biryani */}
+              <LinearGradient
+                colors={[
+                  "rgba(197, 160, 89, 0.15)",
+                  "rgba(197, 160, 89, 0.05)",
+                ]}
+                style={styles.promoCard}
+              >
+                <View style={styles.promoContent}>
+                  <Text style={styles.promoBadge}>KOLKATA SPECIAL</Text>
+                  <Text style={styles.promoTitle}>Royal Saffron Combo</Text>
+                  <Text style={styles.promoDescription}>
+                    Enjoy the classic aroma of pure hand-picked saffron basmati.
+                    Order two plates of premium Kolkata Biryani and unlock an
+                    automatic 15% discount today!
+                  </Text>
+
+                  <View style={styles.promoImageContainer}>
+                    <Image
+                      source={require("../assets/images/biryani.png")}
+                      style={styles.promoImage}
+                      resizeMode="cover"
+                    />
+                  </View>
+
+                  <TouchableOpacity style={styles.promoButton}>
+                    <Text style={styles.promoButtonText}>Get Offer</Text>
+                  </TouchableOpacity>
+                </View>
+              </LinearGradient>
+
+              {/* Card 3: Hyderabadi Biryani */}
+              <LinearGradient
+                colors={[
+                  "rgba(197, 160, 89, 0.15)",
+                  "rgba(197, 160, 89, 0.05)",
+                ]}
+                style={styles.promoCard}
+              >
+                <View style={styles.promoContent}>
+                  <Text style={styles.promoBadge}>HYDERABADI DUM</Text>
+                  <Text style={styles.promoTitle}>Nizami Spicy Feast</Text>
+                  <Text style={styles.promoDescription}>
+                    Experience traditional slow-cooked Nizami layers of richly
+                    textured spices. Get a free portion of classic chicken seekh
+                    kabab with every large bucket.
+                  </Text>
+
+                  <View style={styles.promoImageContainer}>
+                    <Image
+                      source={require("../assets/images/kabab.png")}
+                      style={styles.promoImage}
+                      resizeMode="cover"
+                    />
+                  </View>
+
+                  <TouchableOpacity style={styles.promoButton}>
+                    <Text style={styles.promoButtonText}>Claim Feast</Text>
+                  </TouchableOpacity>
+                </View>
+              </LinearGradient>
+            </ScrollView>
           </View>
         </View>
 
@@ -240,6 +367,7 @@ const styles = StyleSheet.create({
   // Navigation Bar Styles
   navWrapper: {
     position: "absolute",
+    // Fix: Ensures NO GAP at the top on Web, but keeps Android layout safely at 0 as originally built
     top: 0,
     left: 0,
     right: 0,
@@ -292,7 +420,12 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     letterSpacing: 0.5,
   },
-  actionSection: { flexDirection: "row", gap: 8 },
+  actionSection: {
+    flexDirection: "row",
+    gap: 8,
+    // Fix: Restores the exact margins required so Android UI remains completely unchanged
+    marginTop: Platform.OS === "web" ? 12 : 60,
+  },
   callNowBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -331,7 +464,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: Dimensions.get("window").width < 768 ? 84 : 60,
   },
   welcomeBadge: {
     backgroundColor: "rgba(197, 160, 89, 0.15)",
@@ -465,25 +598,30 @@ const styles = StyleSheet.create({
 
   // Promotional Banner Styles
   promoBannerContainer: {
-    marginTop: 40,
+    marginTop: 20,
     width: "100%",
-    paddingHorizontal: 10,
-    maxWidth: 900,
-    alignSelf: "center",
+    alignItems: "center",
   },
-  promoBanner: {
+  promoScrollContent: {
+    paddingHorizontal: 16,
+    gap: 16,
+    paddingBottom: 20,
+    justifyContent:
+      Platform.OS === "web" && width > 768 ? "center" : "flex-start",
+    flexGrow: 1,
+  },
+  promoCard: {
+    width: 280,
     borderRadius: 20,
     padding: 24,
     borderWidth: 1,
     borderColor: "rgba(197, 160, 89, 0.3)",
-    flexDirection: Dimensions.get("window").width < 768 ? "column" : "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    marginHorizontal: Platform.OS === "web" && width > 768 ? 10 : 0,
   },
   promoContent: {
     flex: 1,
-    paddingRight: Dimensions.get("window").width < 768 ? 0 : 24,
-    alignItems: Dimensions.get("window").width < 768 ? "center" : "flex-start",
+    alignItems: "center",
   },
   promoBadge: {
     color: "#FFF",
@@ -499,18 +637,31 @@ const styles = StyleSheet.create({
   },
   promoTitle: {
     color: "#C5A059",
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: "RoyalBold",
     marginBottom: 8,
-    textAlign: Dimensions.get("window").width < 768 ? "center" : "left",
+    textAlign: "center",
   },
   promoDescription: {
     color: "rgba(255,255,255,0.8)",
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: "RoyalMediumItalic",
-    lineHeight: 22,
+    lineHeight: 20,
     marginBottom: 20,
-    textAlign: Dimensions.get("window").width < 768 ? "center" : "left",
+    textAlign: "center",
+  },
+  promoImageContainer: {
+    width: 180,
+    height: 120,
+    marginBottom: 24,
+    borderRadius: 12,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(197, 160, 89, 0.4)",
+  },
+  promoImage: {
+    width: "100%",
+    height: "100%",
   },
   promoButton: {
     backgroundColor: "transparent",
@@ -519,6 +670,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 25,
+    marginTop: "auto",
   },
   promoButtonText: {
     color: "#C5A059",
@@ -526,16 +678,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 0.5,
-  },
-  promoImageContainer: {
-    width: 120,
-    height: 120,
-    marginTop: Dimensions.get("window").width < 768 ? 24 : 0,
-    opacity: 0.6,
-  },
-  promoImage: {
-    width: "100%",
-    height: "100%",
   },
 });
 
