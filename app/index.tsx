@@ -352,7 +352,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#010302",
+    alignItems: "center", // Centers the content on web
   },
+
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -376,12 +378,17 @@ const styles = StyleSheet.create({
     borderBottomColor: "rgba(197, 160, 89, 0.2)",
   },
   navSafeArea: { backgroundColor: "transparent" },
+
   navBar: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    // CHANGE THIS: Instead of space-between, use flex-start and add a gap
+    justifyContent: "flex-start",
     paddingHorizontal: 16,
     paddingVertical: 12,
+    width: "100%",
+    maxWidth: 480, // Constrain the navbar to mobile width even on desktop
+    alignSelf: "center", // Centers it on large screens
   },
   logoSection: { flexDirection: "row", alignItems: "center" },
   logoWrapper: {
@@ -410,8 +417,8 @@ const styles = StyleSheet.create({
   },
   centerLinks: {
     flexDirection: "row",
-    gap: 32,
-    display: Dimensions.get("window").width < 768 ? "none" : "flex",
+    gap: 16, // Use a smaller gap
+    display: "none", // Force hide links on mobile/web-mobile for a cleaner look
   },
   linkText: {
     color: "#FFF",
