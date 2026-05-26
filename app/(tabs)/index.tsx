@@ -102,7 +102,7 @@ const App = () => {
       </LinearGradient>
 
       <ScrollView
-        bounces={false} // Prevents over-scrolling beyond the footer
+        bounces={false}
         showsVerticalScrollIndicator={false}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
@@ -184,6 +184,34 @@ const App = () => {
               cardBgImage={logoImg}
             />
           </View>
+
+          {/* New Promotional Banner */}
+          <View style={styles.promoBannerContainer}>
+            <LinearGradient
+              colors={["rgba(197, 160, 89, 0.15)", "rgba(197, 160, 89, 0.05)"]}
+              style={styles.promoBanner}
+            >
+              <View style={styles.promoContent}>
+                <Text style={styles.promoBadge}>SPECIAL COMBO OFFER</Text>
+                <Text style={styles.promoTitle}>The Royal Feast Trio</Text>
+                <Text style={styles.promoDescription}>
+                  Experience the ultimate fusion of flavors. Order our signature
+                  Smoky Mandi, authentic Kolkata Biryani, and rich Hyderabadi
+                  Biryani together and unlock exclusive combo pricing!
+                </Text>
+                <TouchableOpacity style={styles.promoButton}>
+                  <Text style={styles.promoButtonText}>Claim Offer</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.promoImageContainer}>
+                <Image
+                  source={logoImg}
+                  style={styles.promoImage}
+                  resizeMode="contain"
+                />
+              </View>
+            </LinearGradient>
+          </View>
         </View>
 
         {/* Footer */}
@@ -196,12 +224,17 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#010302", // Changed to match Footer background for a seamless look
+    backgroundColor: "#010302",
   },
-  loadingContainer: { justifyContent: "center", alignItems: "center" },
-  scrollContainer: { flex: 1 },
+  loadingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  scrollContainer: {
+    flex: 1,
+  },
   scrollContent: {
-    flexGrow: 1, // CRITICAL: Stop the container from expanding beyond its content on web
+    flexGrow: 1,
   },
 
   // Navigation Bar Styles
@@ -219,30 +252,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   logoSection: { flexDirection: "row", alignItems: "center" },
   logoWrapper: {
-    width: 45,
-    height: 45,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "rgba(197, 160, 89, 0.1)",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 12,
+    marginRight: 10,
   },
-  navLogo: { width: 35, height: 35 },
+  navLogo: { width: 30, height: 30 },
   brandTexts: { justifyContent: "center" },
   navBrandName: {
     color: "#FFF",
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "RoyalBold",
     letterSpacing: 0.5,
   },
   navTagline: {
     color: "rgba(197, 160, 89, 0.8)",
-    fontSize: 9,
+    fontSize: 8,
     textTransform: "uppercase",
     letterSpacing: 1,
     marginTop: 2,
@@ -250,7 +283,7 @@ const styles = StyleSheet.create({
   centerLinks: {
     flexDirection: "row",
     gap: 32,
-    display: width < 768 ? "none" : "flex",
+    display: Dimensions.get("window").width < 768 ? "none" : "flex",
   },
   linkText: {
     color: "#FFF",
@@ -259,160 +292,164 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     letterSpacing: 0.5,
   },
-  actionSection: { flexDirection: "row", gap: 12 },
+  actionSection: { flexDirection: "row", gap: 8 },
   callNowBtn: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "rgba(197, 160, 89, 0.5)",
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
     borderRadius: 25,
     backgroundColor: "rgba(197, 160, 89, 0.1)",
   },
-  callIcon: { color: "#C5A059", fontSize: 14, marginRight: 6 },
-  callText: { color: "#FFF", fontSize: 12, fontWeight: "600" },
+  callIcon: { color: "#C5A059", fontSize: 12, marginRight: 4 },
+  callText: { color: "#FFF", fontSize: 11, fontWeight: "600" },
   directionsBtn: {
     backgroundColor: "#C5A059",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 25,
   },
   directionsText: {
     color: "#000",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
     textTransform: "uppercase",
   },
 
   // Hero Section
-  imageContainer: { width: width, height: height, backgroundColor: "#000" },
+  imageContainer: {
+    width: "100%",
+    height: Dimensions.get("window").width < 768 ? 600 : 800,
+    backgroundColor: "#000",
+  },
   heroImage: { width: "100%", height: "100%" },
   imageOverlay: { ...StyleSheet.absoluteFillObject },
   heroContent: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 30,
-    paddingTop: 80,
+    paddingHorizontal: 20,
+    paddingTop: 60,
   },
   welcomeBadge: {
     backgroundColor: "rgba(197, 160, 89, 0.15)",
-    paddingHorizontal: 20,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
     borderRadius: 30,
-    marginBottom: 20,
+    marginBottom: 16,
     borderWidth: 1,
     borderColor: "rgba(197, 160, 89, 0.3)",
   },
   welcomeLabel: {
     color: "#C5A059",
-    letterSpacing: 4,
-    fontSize: 14,
+    letterSpacing: 3,
+    fontSize: 12,
     fontFamily: "RoyalBold",
   },
   mainHeadingUpper: {
     color: "#FFF",
-    fontSize: 52,
+    fontSize: Dimensions.get("window").width < 400 ? 34 : 44,
     fontFamily: "RoyalBold",
     textAlign: "center",
-    lineHeight: 58,
+    lineHeight: Dimensions.get("window").width < 400 ? 40 : 50,
   },
   ampersand: {
     color: "#C5A059",
-    fontSize: 48,
+    fontSize: 36,
     fontFamily: "RoyalItalic",
-    marginVertical: -10,
+    marginVertical: -6,
   },
   mainHeadingLower: {
     color: "#FFF",
-    fontSize: 52,
+    fontSize: Dimensions.get("window").width < 400 ? 34 : 44,
     fontFamily: "RoyalBold",
     textAlign: "center",
-    lineHeight: 58,
-    marginBottom: 15,
+    lineHeight: Dimensions.get("window").width < 400 ? 40 : 50,
+    marginBottom: 10,
   },
   divider: {
-    width: 80,
+    width: 60,
     height: 2,
     backgroundColor: "#C5A059",
-    marginVertical: 20,
+    marginVertical: 15,
   },
   locationText: {
     color: "rgba(255,255,255,0.9)",
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "RoyalMediumItalic",
-    marginBottom: 20,
+    marginBottom: 15,
   },
   taglineDesc: {
     color: "#FFF",
-    fontSize: 15,
+    fontSize: 14,
     textAlign: "center",
-    lineHeight: 24,
+    lineHeight: 22,
     opacity: 0.9,
     fontFamily: "RoyalMediumItalic",
-    maxWidth: 500,
-    marginBottom: 40,
+    maxWidth: 450,
+    marginBottom: 30,
   },
-  heroButtons: { flexDirection: "row", gap: 15, marginTop: 20 },
+  heroButtons: { flexDirection: "row", gap: 12, marginTop: 10 },
   heroOrderBtn: {
     backgroundColor: "#C5A059",
-    paddingVertical: 14,
-    paddingHorizontal: 32,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 30,
   },
   heroOrderText: {
     color: "#000",
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 13,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 0.5,
   },
   heroExploreBtn: {
     borderWidth: 2,
     borderColor: "#C5A059",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+    paddingVertical: 10,
+    paddingHorizontal: 24,
     borderRadius: 30,
     backgroundColor: "rgba(197, 160, 89, 0.1)",
   },
   heroExploreText: {
     color: "#FFF",
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 13,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 0.5,
   },
 
   // Lower Body
   lowerBody: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingTop: 30,
-    paddingBottom: 40, // Reduced from previous versions to tighten space
+    paddingBottom: 40,
     backgroundColor: "#0A1C14",
     transform: [{ translateY: -30 }],
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
-  specialityHeaderContainer: { alignItems: "center", marginBottom: 30 },
+  specialityHeaderContainer: { alignItems: "center", marginBottom: 24 },
   specialityHeaderText: {
     color: "#C5A059",
-    fontSize: 32,
+    fontSize: 26,
     fontFamily: "RoyalBold",
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     textTransform: "uppercase",
   },
   headerDivider: {
-    width: 80,
+    width: 60,
     height: 3,
     backgroundColor: "#C5A059",
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 10,
+    marginBottom: 10,
     borderRadius: 2,
   },
   specialitySubtext: {
     color: "rgba(255,255,255,0.6)",
-    fontSize: 14,
+    fontSize: 13,
     textAlign: "center",
     fontFamily: "RoyalMediumItalic",
   },
@@ -420,10 +457,85 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-start",
-    flexWrap: "nowrap",
-    paddingHorizontal: 20,
-    gap: 10,
+    flexWrap: "wrap",
+    paddingHorizontal: 10,
+    gap: 20,
     width: "100%",
+  },
+
+  // Promotional Banner Styles
+  promoBannerContainer: {
+    marginTop: 40,
+    width: "100%",
+    paddingHorizontal: 10,
+    maxWidth: 900,
+    alignSelf: "center",
+  },
+  promoBanner: {
+    borderRadius: 20,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: "rgba(197, 160, 89, 0.3)",
+    flexDirection: Dimensions.get("window").width < 768 ? "column" : "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  promoContent: {
+    flex: 1,
+    paddingRight: Dimensions.get("window").width < 768 ? 0 : 24,
+    alignItems: Dimensions.get("window").width < 768 ? "center" : "flex-start",
+  },
+  promoBadge: {
+    color: "#FFF",
+    backgroundColor: "#C5A059",
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    fontSize: 10,
+    fontFamily: "RoyalBold",
+    letterSpacing: 1,
+    marginBottom: 12,
+    overflow: "hidden",
+  },
+  promoTitle: {
+    color: "#C5A059",
+    fontSize: 24,
+    fontFamily: "RoyalBold",
+    marginBottom: 8,
+    textAlign: Dimensions.get("window").width < 768 ? "center" : "left",
+  },
+  promoDescription: {
+    color: "rgba(255,255,255,0.8)",
+    fontSize: 14,
+    fontFamily: "RoyalMediumItalic",
+    lineHeight: 22,
+    marginBottom: 20,
+    textAlign: Dimensions.get("window").width < 768 ? "center" : "left",
+  },
+  promoButton: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#C5A059",
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+  },
+  promoButtonText: {
+    color: "#C5A059",
+    fontSize: 12,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  promoImageContainer: {
+    width: 120,
+    height: 120,
+    marginTop: Dimensions.get("window").width < 768 ? 24 : 0,
+    opacity: 0.6,
+  },
+  promoImage: {
+    width: "100%",
+    height: "100%",
   },
 });
 
