@@ -2,6 +2,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   Image,
   Platform,
@@ -30,10 +31,13 @@ const CATEGORIES = [
   { id: "4", title: "Breads", image: require("../assets/images/kabab.png") },
   { id: "5", title: "Desserts", image: require("../assets/images/kabab.png") },
   { id: "6", title: "Beverages", image: require("../assets/images/mandi.png") },
+  { id: "7", title: "Muttob", image: require("../assets/images/mandi.png") },
 ];
 
-const isWeb = Platform.OS === "web";
-const numColumns = isWeb ? 5 : 2;
+const { width: screenWidth } = Dimensions.get("window");
+const isDesktopWeb = Platform.OS === "web" && screenWidth > 768;
+
+const numColumns = isDesktopWeb ? 5 : 2;
 const EXACT_CIRCLE_SIZE = 130;
 const blurredBg = require("../assets/images/background2.jpg");
 
@@ -52,8 +56,8 @@ export default function MenuScreen() {
     );
   }
 
-  // Filters out extra items on Android to keep exactly two neat lines (4 items total)
-  const displayData = isWeb ? CATEGORIES : CATEGORIES.slice(0, 4);
+  // FIXED: Removed the .slice(0, 4) filter so all 6 items render everywhere
+  const displayData = CATEGORIES;
 
   return (
     <View style={styles.container}>
@@ -162,35 +166,17 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 60,
     width: "100%",
-    ...Platform.select({
-      web: {
-        paddingHorizontal: 20,
-      },
-    }),
+    paddingHorizontal: isDesktopWeb ? 20 : 0,
   },
   row: {
     marginBottom: 40,
-    ...Platform.select({
-      web: {
-        justifyContent: "center",
-        gap: 32,
-      },
-      android: {
-        justifyContent: "space-around",
-        paddingHorizontal: 16,
-      },
-    }),
+    justifyContent: isDesktopWeb ? "center" : "space-around",
+    paddingHorizontal: isDesktopWeb ? 0 : 16,
+    gap: isDesktopWeb ? 32 : 0,
   },
   categoryItem: {
     alignItems: "center",
-    ...Platform.select({
-      web: {
-        width: EXACT_CIRCLE_SIZE + 30,
-      },
-      android: {
-        width: "45%",
-      },
-    }),
+    width: isDesktopWeb ? EXACT_CIRCLE_SIZE + 30 : "45%",
   },
   glowCircle: {
     width: EXACT_CIRCLE_SIZE + 8,
@@ -229,7 +215,7 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     color: "#FFF",
-    fontSize: isWeb ? 18 : 16,
+    fontSize: isDesktopWeb ? 18 : 16,
     textAlign: "center",
     width: "100%",
     fontFamily: "RoyalMediumItalic",

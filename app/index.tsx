@@ -107,9 +107,9 @@ const App = () => {
             </View>
 
             <View style={styles.centerLinks}>
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <Text style={styles.linkText}>Home</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity>
                 <Text style={styles.linkText}>About</Text>
               </TouchableOpacity>
