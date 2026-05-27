@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  ImageBackground,
   Platform,
   StyleSheet,
   Text,
@@ -53,14 +52,19 @@ export default function MenuScreen() {
     );
   }
 
+  // Filters out extra items on Android to keep exactly two neat lines (4 items total)
+  const displayData = isWeb ? CATEGORIES : CATEGORIES.slice(0, 4);
+
   return (
-    // Replaced flat view with premium background image
-    <ImageBackground
-      source={blurredBg}
-      style={styles.container}
-      resizeMode="cover"
-    >
-      {/* Dark luxury overlay to keep content highly legible */}
+    <View style={styles.container}>
+      {/* Static, Non-Scrolling Background Image */}
+      <Image
+        source={blurredBg}
+        style={styles.absoluteBackground}
+        resizeMode="cover"
+      />
+
+      {/* Dark luxury overlay locked to the screen background */}
       <LinearGradient
         colors={["rgba(1, 3, 2, 0.85)", "rgba(10, 28, 20, 0.95)"]}
         style={StyleSheet.absoluteFillObject}
@@ -76,7 +80,7 @@ export default function MenuScreen() {
 
       <View style={styles.listWrapper}>
         <FlatList
-          data={CATEGORIES}
+          data={displayData}
           key={numColumns}
           numColumns={numColumns}
           showsVerticalScrollIndicator={false}
@@ -85,9 +89,7 @@ export default function MenuScreen() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.categoryItem} activeOpacity={0.85}>
-              {/* Outer Golden Glow Circle Rim */}
               <View style={styles.glowCircle}>
-                {/* The Main Golden Circle */}
                 <View style={styles.circle}>
                   <Image
                     source={item.image}
@@ -97,7 +99,6 @@ export default function MenuScreen() {
                 </View>
               </View>
 
-              {/* Title Below with Premium Brand Font */}
               <Text style={styles.categoryTitle} numberOfLines={1}>
                 {item.title}
               </Text>
@@ -105,7 +106,7 @@ export default function MenuScreen() {
           )}
         />
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -115,6 +116,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#010302",
     paddingTop: 80,
   },
+  absoluteBackground: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    height: "100%",
+  },
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -123,6 +129,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 40,
     paddingHorizontal: 20,
+    zIndex: 1,
   },
   headerText: {
     color: "#C5A059",
@@ -150,26 +157,46 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     width: "100%",
+    zIndex: 1,
   },
   listContainer: {
-    paddingHorizontal: 20,
     paddingBottom: 60,
-    alignItems: "center",
+    width: "100%",
+    ...Platform.select({
+      web: {
+        paddingHorizontal: 20,
+      },
+    }),
   },
   row: {
-    justifyContent: "center",
     marginBottom: 40,
-    gap: isWeb ? 32 : 30, // Relaxed gaps for a grander aesthetic
+    ...Platform.select({
+      web: {
+        justifyContent: "center",
+        gap: 32,
+      },
+      android: {
+        justifyContent: "space-around",
+        paddingHorizontal: 16,
+      },
+    }),
   },
   categoryItem: {
     alignItems: "center",
-    width: EXACT_CIRCLE_SIZE + 30,
+    ...Platform.select({
+      web: {
+        width: EXACT_CIRCLE_SIZE + 30,
+      },
+      android: {
+        width: "45%",
+      },
+    }),
   },
   glowCircle: {
     width: EXACT_CIRCLE_SIZE + 8,
     height: EXACT_CIRCLE_SIZE + 8,
     borderRadius: (EXACT_CIRCLE_SIZE + 8) / 2,
-    backgroundColor: "rgba(197, 160, 89, 0.08)", // Premium gold shadow aura effect
+    backgroundColor: "rgba(197, 160, 89, 0.08)",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 14,
