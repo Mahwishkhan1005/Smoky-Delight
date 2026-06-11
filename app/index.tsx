@@ -4,7 +4,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import {
   ActivityIndicator,
-  Alert,
   Dimensions,
   Image,
   Linking,
@@ -64,11 +63,7 @@ const App = () => {
   };
 
   const handleOrderOnline = () => {
-    Alert.alert(
-      "Order Online",
-      "Our ordering system is currently under maintenance. Please contact us via phone for orders.",
-      [{ text: "OK", onPress: () => console.log("Alert closed") }],
-    );
+    router.push("/gallery"); // Navigate to the menu screen
   };
 
   const handleExploreMenu = () => {
@@ -175,7 +170,7 @@ const App = () => {
                 style={styles.heroOrderBtn}
                 onPress={handleOrderOnline}
               >
-                <Text style={styles.heroOrderText}>Order Online</Text>
+                <Text style={styles.heroOrderText}>Our Gallery</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.heroExploreBtn}
@@ -237,11 +232,9 @@ const App = () => {
           <View style={styles.promoBannerContainer}>
             <ScrollView
               horizontal
-              showsHorizontalScrollIndicator={Platform.OS === "web"}
+              showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.promoScrollContent}
-              style={
-                Platform.OS === "web" ? ({ overflowX: "auto" } as any) : {}
-              }
+              style={styles.promoScrollView}
               decelerationRate="fast"
               snapToInterval={296} // Width + Gap for smooth scrolling on mobile
             >
@@ -600,12 +593,16 @@ const styles = StyleSheet.create({
   promoBannerContainer: {
     marginTop: 20,
     width: "100%",
-    alignItems: "center",
+    // REMOVED: alignItems: "center" - This was causing the scroll viewport to break
+  },
+  promoScrollView: {
+    width: "100%", // Ensures the scrollview maps exactly to the screen width boundaries
   },
   promoScrollContent: {
     paddingHorizontal: 16,
     gap: 16,
     paddingBottom: 20,
+    // The conditional desktop centering you wrote here will still work perfectly
     justifyContent:
       Platform.OS === "web" && width > 768 ? "center" : "flex-start",
     flexGrow: 1,

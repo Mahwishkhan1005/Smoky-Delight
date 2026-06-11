@@ -19,20 +19,10 @@ import {
   CormorantGaramond_700Bold,
   useFonts,
 } from "@expo-google-fonts/cormorant-garamond";
+import { useRouter } from "expo-router";
+import { CATEGORIES } from "../data/menuData"; // Import from your new file
 
-const CATEGORIES = [
-  { id: "1", title: "Biryanis", image: require("../assets/images/mandi.png") },
-  { id: "2", title: "Mandis", image: require("../assets/images/mandi.png") },
-  {
-    id: "3",
-    title: "Full Courses",
-    image: require("../assets/images/mandi.png"),
-  },
-  { id: "4", title: "Breads", image: require("../assets/images/kabab.png") },
-  { id: "5", title: "Desserts", image: require("../assets/images/kabab.png") },
-  { id: "6", title: "Beverages", image: require("../assets/images/mandi.png") },
-  { id: "7", title: "Muttob", image: require("../assets/images/mandi.png") },
-];
+const router = useRouter();
 
 const { width: screenWidth } = Dimensions.get("window");
 const isDesktopWeb = Platform.OS === "web" && screenWidth > 768;
@@ -42,6 +32,7 @@ const EXACT_CIRCLE_SIZE = 130;
 const blurredBg = require("../assets/images/background2.jpg");
 
 export default function MenuScreen() {
+  const router = useRouter();
   let [fontsLoaded] = useFonts({
     RoyalBold: CormorantGaramond_700Bold,
     RoyalItalic: CormorantGaramond_400Regular_Italic,
@@ -92,7 +83,11 @@ export default function MenuScreen() {
           columnWrapperStyle={styles.row}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.categoryItem} activeOpacity={0.85}>
+            <TouchableOpacity
+              style={styles.categoryItem}
+              activeOpacity={0.85}
+              onPress={() => router.push(`../products/${item.id}`)} // Redirect to product list
+            >
               <View style={styles.glowCircle}>
                 <View style={styles.circle}>
                   <Image

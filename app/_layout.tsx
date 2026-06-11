@@ -19,6 +19,9 @@ export default function RootLayout() {
         {/* Pointing directly to the new index.tsx in the app folder */}
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="menu" options={{ headerShown: false }} />
+        <Stack.Screen name="products/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="gallery" options={{ headerShown: false }} />
+
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}
