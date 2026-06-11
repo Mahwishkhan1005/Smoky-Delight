@@ -56,7 +56,6 @@ const GALLERY_MEDIA = [
     title: "Royal Murgh Musallam Feast",
     source: require("../assets/images/image1.jpg"),
   },
-  ,
 ];
 
 const blurredBg = require("../assets/images/background2.jpg");
