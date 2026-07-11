@@ -62,6 +62,11 @@ const App = () => {
     );
   };
 
+  const handleBookVenue = () => {
+    // Add your routing or booking logic here
+    router.push("/book-venue");
+  };
+
   const handleOrderOnline = () => {
     router.push("/gallery"); // Navigate to the menu screen
   };
@@ -124,12 +129,6 @@ const App = () => {
                 <Text style={styles.callIcon}>📞</Text>
                 <Text style={styles.callText}>Call Now</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.directionsBtn}
-                onPress={handleGetDirections}
-              >
-                <Text style={styles.directionsText}>Get Directions</Text>
-              </TouchableOpacity>
             </View>
           </View>
         </SafeAreaView>
@@ -165,18 +164,38 @@ const App = () => {
               Serving families, office-goers, and travellers with freshly
               prepared food, consistent taste, and warm hospitality.
             </Text>
-            <View style={styles.heroButtons}>
+
+            {/* Updated Hero Buttons */}
+            <View
+              style={[
+                styles.heroButtons,
+                { flexWrap: "wrap", justifyContent: "center" },
+              ]}
+            >
+              {/* <TouchableOpacity
+                style={styles.heroOrderBtn}
+                onPress={handleOrderOnline}
+              >
+                <Text style={styles.heroOrderText}>Our Gallery</Text>
+              </TouchableOpacity> */}
+              <TouchableOpacity
+                style={styles.heroExploreBtn}
+                onPress={handleExploreMenu}
+              >
+                <Text style={styles.heroExploreText}>Explore Menu</Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.heroOrderBtn}
                 onPress={handleOrderOnline}
               >
                 <Text style={styles.heroOrderText}>Our Gallery</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.heroExploreBtn}
-                onPress={handleExploreMenu}
+                onPress={handleBookVenue}
               >
-                <Text style={styles.heroExploreText}>Explore Menu</Text>
+                <Text style={styles.heroExploreText}>Book Venue</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -360,7 +379,6 @@ const styles = StyleSheet.create({
   // Navigation Bar Styles
   navWrapper: {
     position: "absolute",
-    // Fix: Ensures NO GAP at the top on Web, but keeps Android layout safely at 0 as originally built
     top: 0,
     left: 0,
     right: 0,
@@ -416,7 +434,6 @@ const styles = StyleSheet.create({
   actionSection: {
     flexDirection: "row",
     gap: 8,
-    // Fix: Restores the exact margins required so Android UI remains completely unchanged
     marginTop: Platform.OS === "web" ? 12 : 60,
   },
   callNowBtn: {
@@ -593,16 +610,14 @@ const styles = StyleSheet.create({
   promoBannerContainer: {
     marginTop: 20,
     width: "100%",
-    // REMOVED: alignItems: "center" - This was causing the scroll viewport to break
   },
   promoScrollView: {
-    width: "100%", // Ensures the scrollview maps exactly to the screen width boundaries
+    width: "100%",
   },
   promoScrollContent: {
     paddingHorizontal: 16,
     gap: 16,
     paddingBottom: 20,
-    // The conditional desktop centering you wrote here will still work perfectly
     justifyContent:
       Platform.OS === "web" && width > 768 ? "center" : "flex-start",
     flexGrow: 1,

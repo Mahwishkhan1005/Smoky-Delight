@@ -21,6 +21,7 @@ export default function RootLayout() {
         <Stack.Screen name="menu" options={{ headerShown: false }} />
         <Stack.Screen name="products/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="gallery" options={{ headerShown: false }} />
+        <Stack.Screen name="book-venue" options={{ headerShown: false }} />
 
         <Stack.Screen
           name="modal"
